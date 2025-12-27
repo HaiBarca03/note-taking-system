@@ -1,0 +1,110 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Group {
+  id: Int!
+  name: String!
+  userId: Int!
+  user: User!
+  notes: [Note!]
+}
+
+type NoteShare {
+  id: Int!
+  noteId: Int!
+  note: Note!
+  recipientId: Int!
+  recipient: User!
+  permission: SharePermission!
+}
+
+enum SharePermission {
+  READ
+  EDIT
+}
+
+type Note {
+  id: Int!
+  title: String!
+  content: String
+  isDeleted: Boolean!
+  deletedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: Int!
+  user: User!
+  groupId: Int
+  group: Group
+  shares: [NoteShare!]
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  id: Int!
+  email: String!
+  createdAt: DateTime!
+  notes: [Note!]
+  groups: [Group!]
+  sharedNotes: [NoteShare!]
+}
+
+type AuthResponse {
+  access_token: String!
+}
+
+type Query {
+  hello: String!
+  notes: [Note!]!
+  notesByGroup(groupId: Int!): [Note!]!
+  note(id: Int!): Note!
+  groups: [Group!]!
+}
+
+type Mutation {
+  register(data: RegisterInput!): AuthResponse!
+  login(data: AuthInput!): AuthResponse!
+  createNote(createNoteInput: CreateNoteInput!): Note!
+  updateNote(updateNoteInput: UpdateNoteInput!): Note!
+  removeNote(id: Int!): Boolean!
+  createGroup(createGroupInput: CreateGroupInput!): Group!
+  updateGroup(updateGroupInput: UpdateGroupInput!): Group!
+  removeGroup(id: Int!): Boolean!
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+  fullName: String
+}
+
+input AuthInput {
+  email: String!
+  password: String!
+}
+
+input CreateNoteInput {
+  title: String!
+  content: String
+  groupId: Int
+}
+
+input UpdateNoteInput {
+  id: Int!
+  title: String
+  content: String
+  groupId: Int
+}
+
+input CreateGroupInput {
+  name: String!
+}
+
+input UpdateGroupInput {
+  id: Int!
+  name: String
+}
