@@ -1,0 +1,22 @@
+name: Auto Deploy to Render
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger_render_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Trigger Render Deployment
+        run: |
+          echo "Starting deployment to Render..."
+          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+
+      - name: Deployment Request Sent
+        run: echo "Render build hook has been triggered. Check Render dashboard for status."
