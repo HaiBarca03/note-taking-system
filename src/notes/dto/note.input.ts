@@ -25,4 +25,7 @@ export class UpdateNoteInput {
 
   @Field(() => Int, { nullable: true })
   groupId?: number;
+
+  @Field(() => Boolean, { nullable: true })
+  isDeleted?: boolean;
 }

@@ -24,6 +24,10 @@ export class Group {
   @Column()
   userId: number;
 
+  @Field(() => Boolean)
+  @Column({ default: false })
+  isDeleted: boolean;
+
   @Field(() => User)
   @ManyToOne(() => User, (user) => user.groups, { onDelete: 'CASCADE' })
   user: User;

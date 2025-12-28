@@ -19,6 +19,7 @@ export class GroupService {
   create(createGroupInput: CreateGroupInput, userId: number) {
     const group = this.groupRepository.create({
       ...createGroupInput,
+      isDeleted: false,
       userId,
     });
     return this.groupRepository.save(group);
@@ -26,10 +27,13 @@ export class GroupService {
 
   // Lấy danh sách group của riêng user đó
   // src/groups/group.service.ts
-  async findAll(userId: number) {
+  async findAll(userId: number, includeDeleted?: boolean) {
     return this.groupRepository.find({
-      where: { userId },
-      relations: ['user'], // Ép TypeORM Join với bảng User
+      where:
+        typeof includeDeleted === 'boolean'
+          ? { userId, isDeleted: includeDeleted }
+          : { userId }, // không truyền → lấy tất cả
+      relations: ['user'],
     });
   }
 
