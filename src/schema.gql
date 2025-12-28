@@ -6,6 +6,7 @@ type Group {
   id: Int!
   name: String!
   userId: Int!
+  isDeleted: Boolean!
   user: User!
   notes: [Note!]
 }
@@ -62,7 +63,7 @@ type Query {
   notes: [Note!]!
   notesByGroup(groupId: Int!): [Note!]!
   note(id: Int!): Note!
-  groups: [Group!]!
+  groups(includeDeleted: Boolean! = false): [Group!]!
 }
 
 type Mutation {
@@ -98,6 +99,7 @@ input UpdateNoteInput {
   title: String
   content: String
   groupId: Int
+  isDeleted: Boolean
 }
 
 input CreateGroupInput {
@@ -107,4 +109,5 @@ input CreateGroupInput {
 input UpdateGroupInput {
   id: Int!
   name: String
+  isDeleted: Boolean
 }

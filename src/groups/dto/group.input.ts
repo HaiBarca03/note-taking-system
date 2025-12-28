@@ -13,4 +13,7 @@ export class UpdateGroupInput {
 
   @Field({ nullable: true })
   name?: string;
+
+  @Field(() => Boolean, { nullable: true })
+  isDeleted?: boolean;
 }

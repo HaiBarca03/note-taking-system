@@ -21,9 +21,13 @@ export class GroupResolver {
   }
 
   @Query(() => [Group], { name: 'groups' })
-  findAll(@CurrentUser() user: User) {
-    console.log('Current User in findAll Groups:', user);
-    return this.groupService.findAll(user.id);
+  findAll(
+    @CurrentUser() user: User,
+    @Args('includeDeleted', { type: () => Boolean, defaultValue: false })
+    includeDeleted: boolean,
+  ) {
+    // console.log('Current User in findAll Groups:', user);
+    return this.groupService.findAll(user.id, includeDeleted);
   }
 
   @Mutation(() => Group)
