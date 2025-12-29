@@ -5,6 +5,11 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const server = app.getHttpAdapter().getInstance();
+  server.get('/ping', (req, res) => {
+    res.status(200).send('OK');
+  });
+
   app.enableCors({
     origin: (origin, callback) => {
       const whitelist = [
