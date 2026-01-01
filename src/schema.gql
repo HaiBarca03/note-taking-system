@@ -15,15 +15,21 @@ type NoteShare {
   id: Int!
   noteId: Int!
   note: Note!
-  recipientId: Int!
-  recipient: User!
+  recipientId: Int
+  shareToken: String!
   permission: SharePermission!
+  expiredAt: DateTime
 }
 
 enum SharePermission {
   READ
   EDIT
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Note {
   id: Int!
@@ -39,11 +45,6 @@ type Note {
   group: Group
   shares: [NoteShare!]
 }
-
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
 
 type User {
   id: Int!
@@ -63,6 +64,7 @@ type Query {
   notes: [Note!]!
   notesByGroup(groupId: Int!): [Note!]!
   note(id: Int!): Note!
+  sharedNote(token: String!): Note!
   groups(includeDeleted: Boolean! = false): [Group!]!
 }
 
@@ -72,6 +74,8 @@ type Mutation {
   createNote(createNoteInput: CreateNoteInput!): Note!
   updateNote(updateNoteInput: UpdateNoteInput!): Note!
   removeNote(id: Int!): Boolean!
+  shareNote(id: Int!, permission: SharePermission!): String!
+  updateSharedNote(token: String!, content: String!): Note!
   createGroup(createGroupInput: CreateGroupInput!): Group!
   updateGroup(updateGroupInput: UpdateGroupInput!): Group!
   removeGroup(id: Int!): Boolean!

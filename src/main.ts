@@ -10,18 +10,24 @@ async function bootstrap() {
     res.status(200).send('OK');
   });
 
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'http://localhost:5173',
+  ];
+
   app.enableCors({
     origin: (origin, callback) => {
-      const whitelist = [
-        'http://localhost:5173',
-        'https://dh-notes.vercel.app',
-      ];
-
-      if (!origin || whitelist.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
+      // Cho phép server-to-server, graphql playground
+      if (!origin) {
+        return callback(null, true);
       }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error('Not allowed by CORS'), false);
     },
     credentials: true,
   });

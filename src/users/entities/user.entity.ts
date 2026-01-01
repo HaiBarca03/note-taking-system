@@ -37,6 +37,6 @@ export class User {
   groups: Group[];
 
   @Field(() => [NoteShare], { nullable: true })
-  @OneToMany(() => NoteShare, (noteShare) => noteShare.recipient)
+  @OneToMany(() => NoteShare, (noteShare) => noteShare.recipientId)
   sharedNotes: NoteShare[];
 }

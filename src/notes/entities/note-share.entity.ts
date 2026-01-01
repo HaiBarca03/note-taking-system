@@ -28,13 +28,13 @@ export class NoteShare {
   @ManyToOne(() => Note, (note) => note.shares, { onDelete: 'CASCADE' })
   note: Note;
 
-  @Field(() => Int)
-  @Column()
+  @Field(() => Int, { nullable: true })
+  @Column({ nullable: true })
   recipientId: number;
 
-  @Field(() => User)
-  @ManyToOne(() => User, (user) => user.sharedNotes, { onDelete: 'CASCADE' })
-  recipient: User;
+  @Field()
+  @Column({ unique: true })
+  shareToken: string;
 
   @Field(() => SharePermission)
   @Column({
@@ -43,4 +43,10 @@ export class NoteShare {
     default: SharePermission.READ,
   })
   permission: SharePermission;
+
+  @Field({ nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
+  expiredAt: Date;
 }
+
+
