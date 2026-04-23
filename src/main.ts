@@ -25,7 +25,14 @@ async function bootstrap() {
         return callback(null, true);
       }
 
-      if (allowedOrigins.includes(origin)) {
+      const isAllowed = allowedOrigins.some((allowed) => {
+        if (allowed instanceof RegExp) {
+          return allowed.test(origin);
+        }
+        return allowed === origin;
+      });
+
+      if (isAllowed) {
         return callback(null, true);
       }
 
