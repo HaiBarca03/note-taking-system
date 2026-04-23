@@ -9,6 +9,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { Note } from '../../notes/entities/note.entity';
 import { Group } from '../../groups/entities/group.entity';
 import { NoteShare } from '../../notes/entities/note-share.entity';
+import { GroupShare } from '../../groups/entities/group-share.entity';
 
 @ObjectType() // Để GraphQL hiểu đây là một Type
 @Entity('users')
@@ -39,4 +40,8 @@ export class User {
   @Field(() => [NoteShare], { nullable: true })
   @OneToMany(() => NoteShare, (noteShare) => noteShare.recipientId)
   sharedNotes: NoteShare[];
+
+  @Field(() => [GroupShare], { nullable: true })
+  @OneToMany(() => GroupShare, (groupShare) => groupShare.recipientId)
+  sharedGroups: GroupShare[];
 }

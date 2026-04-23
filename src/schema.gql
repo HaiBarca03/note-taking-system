@@ -2,15 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Group {
-  id: Int!
-  name: String!
-  userId: Int!
-  isDeleted: Boolean!
-  user: User!
-  notes: [Note!]
-}
-
 type NoteShare {
   id: Int!
   noteId: Int!
@@ -30,6 +21,26 @@ enum SharePermission {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type GroupShare {
+  id: Int!
+  groupId: Int!
+  group: Group!
+  recipientId: Int
+  shareToken: String!
+  permission: SharePermission!
+  expiredAt: DateTime
+}
+
+type Group {
+  id: Int!
+  name: String!
+  userId: Int!
+  isDeleted: Boolean!
+  user: User!
+  notes: [Note!]
+  shares: [GroupShare!]
+}
 
 type Note {
   id: Int!
@@ -53,6 +64,7 @@ type User {
   notes: [Note!]
   groups: [Group!]
   sharedNotes: [NoteShare!]
+  sharedGroups: [GroupShare!]
 }
 
 type AuthResponse {
@@ -66,6 +78,9 @@ type Query {
   note(id: Int!): Note!
   sharedNote(token: String!): Note!
   groups(includeDeleted: Boolean! = false): [Group!]!
+  sharedGroupByToken(token: String!): Group!
+  sharedNoteInGroup(token: String!, noteId: Int!): Note!
+  groupSharePermission(token: String!): SharePermission!
 }
 
 type Mutation {
@@ -79,6 +94,8 @@ type Mutation {
   createGroup(createGroupInput: CreateGroupInput!): Group!
   updateGroup(updateGroupInput: UpdateGroupInput!): Group!
   removeGroup(id: Int!): Boolean!
+  shareGroup(id: Int!, permission: SharePermission!): String!
+  updateNoteInSharedGroup(token: String!, noteId: Int!, content: String!): Note!
 }
 
 input RegisterInput {

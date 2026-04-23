@@ -15,6 +15,7 @@ async function bootstrap() {
     'http://localhost:5173',
     'https://note-taking-system-2wig.onrender.com',
     'https://dh-notes.vercel.app',
+    /^https?:\/\/(.+\.)?haiddtechsoft\.id\.vn$/,
   ];
 
   app.enableCors({
