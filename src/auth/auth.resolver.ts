@@ -14,6 +14,9 @@ import { AuthInput, RegisterInput } from './dto/auth.input';
 class AuthResponse {
   @Field()
   access_token: string;
+
+  @Field()
+  refresh_token: string;
 }
 
 @Resolver()
@@ -33,5 +36,10 @@ export class AuthResolver {
   @Mutation(() => AuthResponse)
   async login(@Args('data') data: AuthInput) {
     return this.authService.login(data);
+  }
+
+  @Mutation(() => AuthResponse)
+  async refreshToken(@Args('token') token: string) {
+    return this.authService.refreshToken(token);
   }
 }

@@ -15,7 +15,7 @@ import { User } from '../users/entities/user.entity';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secret: 'MY_SUPER_SECRET_KEY',
-      signOptions: { expiresIn: '7d' }, // Token có hạn 7 ngày
+      signOptions: { expiresIn: '1h' }, // access_token có hạn 1 giờ
     }),
   ],
   providers: [AuthService, AuthResolver, UsersRepository, JwtStrategy],

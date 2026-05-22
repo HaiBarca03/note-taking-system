@@ -50,6 +50,22 @@ export class AuthService {
   private generateToken(userId: number, email: string) {
     return {
       access_token: this.jwtService.sign({ sub: userId, email }),
+      refresh_token: this.jwtService.sign(
+        { sub: userId, email },
+        { expiresIn: '7d' }, // refresh_token có hạn 7 ngày
+      ),
     };
+  }
+
+  async refreshToken(refreshToken: string) {
+    try {
+      const payload = this.jwtService.verify(refreshToken);
+      const user = await this.usersRepository.findByEmail(payload.email);
+      if (!user) throw new UnauthorizedException('Không tìm thấy người dùng');
+
+      return this.generateToken(user.id, user.email);
+    } catch (e) {
+      throw new UnauthorizedException('Refresh token không hợp lệ hoặc đã hết hạn');
+    }
   }
 }

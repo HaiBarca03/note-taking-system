@@ -69,6 +69,7 @@ type User {
 
 type AuthResponse {
   access_token: String!
+  refresh_token: String!
 }
 
 type Query {
@@ -86,6 +87,7 @@ type Query {
 type Mutation {
   register(data: RegisterInput!): AuthResponse!
   login(data: AuthInput!): AuthResponse!
+  refreshToken(token: String!): AuthResponse!
   createNote(createNoteInput: CreateNoteInput!): Note!
   updateNote(updateNoteInput: UpdateNoteInput!): Note!
   removeNote(id: Int!): Boolean!
